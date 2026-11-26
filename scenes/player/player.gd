@@ -9,6 +9,7 @@ var can_move = true
 @export var tool_direction_offset := 14
 @export var tool_y_offset := 4
 
+# 定義工具相關
 enum Tools {HOE, AXE, WATER}
 var current_tool: Tools = Tools.AXE
 const tool_connection = {
@@ -17,6 +18,10 @@ const tool_connection = {
 	Tools.WATER: 'water',
 }
 signal tool_use(tool: Tools, pos: Vector2)
+
+# 定義作物相關 
+var current_seed: Global.Seeds = Global.Seeds.CORN
+signal seed_use(seed: Global.Seeds, pos: Vector2)
 
 func _physics_process(_delta):
 	if can_move:
@@ -31,10 +36,12 @@ func _physics_process(_delta):
 func get_input():
 	direction = Input.get_vector("left", "right", "up", "down")
 	
+	# 切換工具
 	if Input.is_action_just_pressed("tool_forward") or Input.is_action_just_pressed("tool_backward"):
 		# var tool_direction = Input.get_axis("tool_backward", "tool_forward") as int
 		current_tool = posmod(current_tool + 1, Tools.size()) as Tools
-		
+	
+	# 使用工具	
 	if Input.is_action_just_pressed("action"):
 		tool_state_machine.travel(tool_connection[current_tool])
 		$AnimationTree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
@@ -42,6 +49,19 @@ func get_input():
 		if current_tool in [Tools.HOE, Tools.WATER]:
 			await $AnimationTree.animation_finished
 			tool_use.emit(current_tool, position + last_direction * tool_direction_offset + Vector2(0, tool_y_offset))
+	
+	# 切換作物/種子
+	if Input.is_action_just_pressed("seed_toggle"):
+		current_seed = posmod(current_seed + 1, Global.Seeds.size()) as Global.Seeds
+	
+	# 使用作物
+	if Input.is_action_just_pressed("plant"):
+		can_move = false
+		direction = Vector2.ZERO
+		seed_use.emit(current_seed, position + last_direction * tool_direction_offset + Vector2(0, tool_y_offset))
+		await get_tree().create_timer(0.5).timeout
+		can_move = true
+	
 		
 func animation():
 	if direction:

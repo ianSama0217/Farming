@@ -941,4 +941,5 @@ position = Vector2(-86, 166)
 [node name="Tree8" parent="Objects/Trees" instance=ExtResource("6_cjuj6")]
 position = Vector2(71, 235)
 
+[connection signal="seed_use" from="Objects/Player" to="." method="_on_player_seed_use"]
 [connection signal="tool_use" from="Objects/Player" to="." method="_on_player_tool_use"]

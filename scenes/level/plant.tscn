@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdl5jeqr0tpqt"]
+
+[ext_resource type="Script" path="res://scenes/level/plant.gd" id="1_6w4yh"]
+[ext_resource type="Texture2D" uid="uid://lcymer2isb2i" path="res://graphics/plants/corn.png" id="1_sfhwi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k5r80"]
+size = Vector2(10, 16)
+
+[node name="Plant" type="StaticBody2D"]
+script = ExtResource("1_6w4yh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_sfhwi")
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 7)
+shape = SubResource("RectangleShape2D_k5r80")

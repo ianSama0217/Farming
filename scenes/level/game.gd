@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var player = $Objects/Player
+var plant_scene: PackedScene = preload("res://scenes/level/plant.tscn") 
 
 func _on_player_tool_use(tool, pos):
 	var grid_pos = Vector2i(pos.x / 16, pos.y / 16)
@@ -20,3 +21,14 @@ func _on_player_tool_use(tool, pos):
 			if tree and tree.global_position.distance_to(pos) < 10:
 				tree.hit()
 				print('use axe')
+
+
+func _on_player_seed_use(seed_enum, pos):
+	var grid_pos = Vector2i(pos.x / 16, pos.y / 16)
+	var cell = $Layers/SoilLayer.get_cell_tile_data(0, grid_pos, false) as TileData
+	if cell:
+		var plant_pos = Vector2(grid_pos.x * 16 + 8, grid_pos.y * 16 - 4)
+		var plant = plant_scene.instantiate() as StaticBody2D
+		plant.setup(seed_enum, grid_pos)
+		$Objects.add_child(plant)
+		plant.position = plant_pos

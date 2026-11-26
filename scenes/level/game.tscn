@@ -1,11 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://bf0yuue48pk6v"]
+[gd_scene load_steps=19 format=3 uid="uid://bf0yuue48pk6v"]
 
+[ext_resource type="Script" path="res://scenes/level/game.gd" id="1_2yohg"]
 [ext_resource type="Texture2D" uid="uid://b134tjp5ngghx" path="res://graphics/tilesets/water.png" id="1_72qom"]
 [ext_resource type="PackedScene" uid="uid://ca106qafnt25o" path="res://scenes/player/player.tscn" id="1_e6yxx"]
 [ext_resource type="Texture2D" uid="uid://baw527j36pxgi" path="res://graphics/tilesets/grass.png" id="1_rpl3a"]
 [ext_resource type="Texture2D" uid="uid://c15lysgtp52wu" path="res://graphics/tilesets/soil.png" id="2_e68pn"]
 [ext_resource type="Texture2D" uid="uid://dcwcdle3cjkv6" path="res://graphics/tilesets/hills.png" id="4_fk1o6"]
 [ext_resource type="PackedScene" uid="uid://dpqqe6xpru04u" path="res://scenes/level/tree.tscn" id="6_cjuj6"]
+[ext_resource type="Texture2D" uid="uid://byfag0kgqavgo" path="res://graphics/tilesets/soil_water.png" id="6_djwni"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lc2gb"]
 texture = ExtResource("1_72qom")
@@ -108,6 +110,7 @@ texture = ExtResource("1_rpl3a")
 1:1/0/terrains_peering_bit/top_left_corner = 0
 1:1/0/terrains_peering_bit/top_side = 0
 1:1/0/terrains_peering_bit/top_right_corner = 0
+1:1/0/custom_data_0 = true
 2:1/0 = 0
 2:1/0/terrain_set = 0
 2:1/0/terrain = 0
@@ -329,6 +332,7 @@ texture = ExtResource("1_rpl3a")
 0:4/0/terrains_peering_bit/top_left_corner = 0
 0:4/0/terrains_peering_bit/top_side = 0
 0:4/0/terrains_peering_bit/top_right_corner = 0
+0:4/0/custom_data_0 = true
 1:4/0 = 0
 1:4/0/terrain_set = 0
 1:4/0/terrain = 0
@@ -340,6 +344,7 @@ texture = ExtResource("1_rpl3a")
 1:4/0/terrains_peering_bit/top_left_corner = 0
 1:4/0/terrains_peering_bit/top_side = 0
 1:4/0/terrains_peering_bit/top_right_corner = 0
+1:4/0/custom_data_0 = true
 2:4/0 = 0
 2:4/0/terrain_set = 0
 2:4/0/terrain = 0
@@ -351,6 +356,7 @@ texture = ExtResource("1_rpl3a")
 2:4/0/terrains_peering_bit/top_left_corner = 0
 2:4/0/terrains_peering_bit/top_side = 0
 2:4/0/terrains_peering_bit/top_right_corner = 0
+2:4/0/custom_data_0 = true
 3:4/0 = 0
 3:4/0/terrain_set = 0
 3:4/0/terrain = 0
@@ -362,6 +368,7 @@ texture = ExtResource("1_rpl3a")
 3:4/0/terrains_peering_bit/top_left_corner = 0
 3:4/0/terrains_peering_bit/top_side = 0
 3:4/0/terrains_peering_bit/top_right_corner = 0
+3:4/0/custom_data_0 = true
 4:4/0 = 0
 4:4/0/terrain_set = 0
 4:4/0/terrain = 0
@@ -411,6 +418,8 @@ texture = ExtResource("1_rpl3a")
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "main"
 terrain_set_0/terrain_0/color = Color(0.728703, 0, 0.0886472, 1)
+custom_data_layer_0/name = "useable"
+custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_08kli")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3rfby"]
@@ -863,7 +872,17 @@ texture = ExtResource("4_fk1o6")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_x6iux")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yh024"]
+texture = ExtResource("6_djwni")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_4jqf4"]
+sources/0 = SubResource("TileSetAtlasSource_yh024")
+
 [node name="Game" type="Node2D"]
+script = ExtResource("1_2yohg")
 
 [node name="Layers" type="Node2D" parent="."]
 
@@ -886,12 +905,17 @@ tile_set = SubResource("TileSet_o0lh4")
 format = 2
 layer_0/tile_data = PackedInt32Array(-262152, 0, 0, -196616, 0, 1, -131080, 0, 1, -65544, 0, 2, -262151, 65536, 0, -196615, 65536, 1, -131079, 65536, 1, -65543, 65536, 2, -262150, 65536, 0, -196614, 65536, 1, -131078, 65536, 1, -65542, 65536, 2, -262149, 65536, 0, -196613, 65536, 1, -131077, 65536, 1, -65541, 65536, 2, -262148, 65536, 0, -196612, 65536, 1, -131076, 65536, 1, -65540, 65536, 2, -262147, 65536, 0, -196611, 65536, 1, -131075, 65536, 1, -65539, 196608, 2, -262146, 131072, 0, -196610, 131072, 1, -131074, 131072, 1, -65538, 131072, 2)
 
+[node name="SoilWaterLayer" type="TileMap" parent="Layers"]
+tile_set = SubResource("TileSet_4jqf4")
+format = 2
+
 [node name="Objects" type="Node2D" parent="."]
 y_sort_enabled = true
 
 [node name="Player" parent="Objects" instance=ExtResource("1_e6yxx")]
 
 [node name="Trees" type="Node2D" parent="Objects"]
+y_sort_enabled = true
 
 [node name="Tree" parent="Objects/Trees" instance=ExtResource("6_cjuj6")]
 position = Vector2(-4, 42)
@@ -916,3 +940,5 @@ position = Vector2(-86, 166)
 
 [node name="Tree8" parent="Objects/Trees" instance=ExtResource("6_cjuj6")]
 position = Vector2(71, 235)
+
+[connection signal="tool_use" from="Objects/Player" to="." method="_on_player_tool_use"]

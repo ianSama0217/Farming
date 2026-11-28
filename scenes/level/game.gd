@@ -3,6 +3,10 @@ extends Node2D
 @onready var player = $Objects/Player
 var plant_scene: PackedScene = preload("res://scenes/level/plant.tscn") 
 
+func _process(_delta):
+	if Input.is_action_just_pressed("ui_focus_next"):
+		day_switch()
+
 func _on_player_tool_use(tool, pos):
 	var grid_pos = Vector2i(pos.x / 16, pos.y / 16)
 	if tool == player.Tools.HOE:
@@ -32,3 +36,15 @@ func _on_player_seed_use(seed_enum, pos):
 		plant.setup(seed_enum, grid_pos)
 		$Objects.add_child(plant)
 		plant.position = plant_pos
+		
+func day_switch():
+	var tween = create_tween()
+	tween.tween_property($CanvasLayer/ColorRect, 'modulate:a', 1.0, 1.0)
+	tween.tween_callback(level_reset)
+	tween.tween_interval(1.0)
+	tween.tween_property($CanvasLayer/ColorRect, 'modulate:a', 0.0, 1.0)
+
+func level_reset():
+	for plant in get_tree().get_nodes_in_group('Plants'):
+		plant.grow(plant.grid_pos in $Layers/SoilWaterLayer.get_used_cells(0))
+	$Layers/SoilWaterLayer.clear()
